@@ -11,9 +11,14 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
+    "javascript-state-machine": "^3.1.0",
+    "jotai": "^2.12.3",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-force-graph": "^1.47.6",
+    "react-force-graph-2d": "^1.27.1",
+    "xstate": "^5.19.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
