@@ -1,12 +1,21 @@
-import GameMap from "./GameMap";
 import GameTile from "./GameTile";
+import TileType from "./TileType.ts";
 
 export default class TilePlacementState {
-    map: GameMap = new GameMap();
-    state: string = "start";
-    tileList: GameTile[] = [];
-    pointer: GameTile = this.map.startTile;
-    branchStack: GameTile[] = [];
 
+    // Map state
+    startTile: GameTile;
+    tileList: GameTile[];
+
+    // Generation state
+    state: string = "start";
+    pointer: GameTile;
+    branchStack: GameTile[] = [];
     distanceFromIntersection: number = 0;
+
+    constructor() {
+        this.startTile = new GameTile(TileType.Start);
+        this.tileList = [this.startTile];
+        this.pointer = this.startTile;
+    }
 }

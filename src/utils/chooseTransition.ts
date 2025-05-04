@@ -1,19 +1,19 @@
 import TilePlacementState from '../types/TilePlacementState';
-
-// Minimum distance from the intersection to branch again
-const MIN_DISTANCE_FROM_INTERSECTION = 5;
+import GameSettings from "../types/GameSettings.ts";
 
 let randomChoice = 0.0;
 
-export default function chooseTransition(currentState: TilePlacementState) {
+export default function chooseTransition(
+    currentState: TilePlacementState,
+    settings: GameSettings) {
 
     // Debugging Output
     console.log("Choose Transition:", currentState.state);
 
     // const state = currentState.state;
-    const { state } = currentState;
+    const {state} = currentState;
 
-    const isFarEnoughToBranch = currentState.distanceFromIntersection >= MIN_DISTANCE_FROM_INTERSECTION;
+    const isFarEnoughToBranch = currentState.distanceFromIntersection >= settings.minIntersectionDistance;
 
 
     if (state === 'path') {
@@ -22,12 +22,10 @@ export default function chooseTransition(currentState: TilePlacementState) {
         randomChoice = Math.random();
         if (randomChoice <= 0.40 && isFarEnoughToBranch) {
             return 'branch';
-        }
-        else {
+        } else {
             return 'continue';
         }
-    }
-    else if (state === 'branch') {
+    } else if (state === 'branch') {
         // chanceBranch = 0.05;
         // continueBranch = 0.75;
         // chancePipe = 0.05;
@@ -35,14 +33,11 @@ export default function chooseTransition(currentState: TilePlacementState) {
         randomChoice = Math.random();
         if (randomChoice <= 0.05 && isFarEnoughToBranch) {
             return 'branchBranch';
-        }
-        else if (randomChoice <= 0.10) {
+        } else if (randomChoice <= 0.10) {
             return 'pipe';
-        }
-        else if (randomChoice <= 0.25 && isFarEnoughToBranch) {
+        } else if (randomChoice <= 0.25 && isFarEnoughToBranch) {
             return 'loopback';
-        }
-        else {
+        } else {
             return 'continueBranch';
         }
     }

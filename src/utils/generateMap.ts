@@ -1,16 +1,13 @@
 import TilePlacementState from "../types/TilePlacementState";
 import chooseTransition from "./chooseTransition";
 import tilePlacementFSM from "./tilePlacementFSM";
-import { createActor } from "xstate";
+import {createActor} from "xstate";
 import handleTransition from "./handleTransition.ts";
 import TilePlacementTransition from "../types/TilePlacementTransition.ts";
 import TileType from "../types/TileType.ts";
+import GameSettings from "../types/GameSettings.ts";
 
-
-const TILE_COUNT = 30; // Number of tiles to generate
-const MIN_STAR_DISTANCE = 10; // Minimum distance from the start tile to the star tile
-
-export default function generateMap() {
+export default function generateMap(settings: GameSettings) {
 
     // Create State Machine
     const tilePlacementActor = createActor(tilePlacementFSM);
@@ -18,20 +15,19 @@ export default function generateMap() {
 
     // Create new placement state
     const currentState = new TilePlacementState();
-    currentState.tileList.push(currentState.map.startTile); // <-- Fix bug where start tile was not added to the list
 
-    while (currentState.tileList.length < TILE_COUNT) {
+    while (currentState.tileList.length < settings.nodeCount) {
         // Update State from State Machine
         currentState.state = tilePlacementActor.getSnapshot().value as string;
 
         // Update Finite State Machine with the current state
-        const transition = chooseTransition(currentState) as TilePlacementTransition;
+        const transition = chooseTransition(currentState, settings) as TilePlacementTransition;
 
         // Handle the transition
         handleTransition(currentState, transition);
 
         // Update the FSM with the chosen transition
-        tilePlacementActor.send({ type: transition });
+        tilePlacementActor.send({type: transition});
 
         // Debugging Output
         console.log(currentState);
@@ -40,12 +36,12 @@ export default function generateMap() {
     // Assign Star Tile
     if (Math.random() < 0.5) {
         // Loop the map back to the start tile
-        currentState.pointer.arrows.push(currentState.map.startTile);
+        currentState.pointer.arrows.push(currentState.startTile);
 
         // Choose a random tile for star with a minimum distance from the start tile
         let randomTileIndex = Math.floor(Math.random() * currentState.tileList.length);
-        if (randomTileIndex < MIN_STAR_DISTANCE)
-            randomTileIndex += MIN_STAR_DISTANCE;
+        if (randomTileIndex < settings.minStarDistance)
+            randomTileIndex += settings.minStarDistance;
 
         const randomTile = currentState.tileList[randomTileIndex];
         randomTile.type = TileType.Star;

@@ -5,4 +5,8 @@ export default class GameTile {
     id: string = generateGUID();
     arrows: GameTile[] = [];
     type: TileType = TileType.Unknown;
+
+    constructor(type: TileType = TileType.Unknown) {
+        this.type = type;
+    }
 }

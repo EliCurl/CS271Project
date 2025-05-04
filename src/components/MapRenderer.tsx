@@ -1,11 +1,8 @@
 import React from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import TilePlacementState from '../types/TilePlacementState';
 import TileType from '../types/TileType';
-
-export interface MapRendererProps {
-    state: TilePlacementState;
-}
+import useWindowSize from "../hooks/useWindowSize.ts";
+import useCurrentMap from "../hooks/useCurrentMap.ts";
 
 const TileTypeColors: Record<TileType, string> = {
     [TileType.Unknown]: 'gray',
@@ -27,19 +24,20 @@ const TileLabels: Record<TileType, string> = {
     [TileType.EndStar]: 'End Star',
 };
 
-export default function MapRenderer(props: MapRendererProps) {
-    const { state } = props;
+export default function MapRenderer() {
+    const currentMap = useCurrentMap();
+    const [width, height] = useWindowSize();
 
     const nodeList = React.useMemo(() => {
-        return state.tileList.map((tile) => ({
+        return currentMap.tileList.map((tile) => ({
             id: tile.id,
             name: tile.type,
-            isStart: tile.id === state.map.startTile.id
+            isStart: tile.id === currentMap.startTile.id
         }));
-    }, [state.tileList]);
+    }, [currentMap]);
 
     const linkList = React.useMemo(() => {
-        return state.tileList.flatMap((tile) => {
+        return currentMap.tileList.flatMap((tile) => {
             return tile.arrows
                 .filter((arrow) => arrow.id !== tile.id) // Avoid self-loops
                 .filter((arrow) => arrow.id !== undefined) // Avoid undefined IDs
@@ -48,17 +46,31 @@ export default function MapRenderer(props: MapRendererProps) {
                     target: arrow.id,
                 }));
         });
-    }, [state.tileList]);
-
+    }, [currentMap.tileList]);
 
     return (
-        <ForceGraph2D
-            graphData={{ nodes: nodeList, links: linkList }}
-            nodeColor={(node) => TileTypeColors[node.name as TileType]}
-            nodeLabel={(node) => TileLabels[node.name as TileType]}
-            nodeRelSize={15}
-            linkDirectionalArrowLength={14}
-            linkCurvature={0}
-        />
+        <div
+            className={"w-100 h-100 position-absolute d-flex justify-content-center align-items-center"}
+        >
+            <ForceGraph2D
+                graphData={{nodes: nodeList, links: linkList}}
+
+                backgroundColor={"#eee"}
+                nodeColor={(node) => TileTypeColors[node.name as TileType]}
+                nodeLabel={(node) => TileLabels[node.name as TileType]}
+                nodeRelSize={18}
+                linkDirectionalArrowLength={14}
+                linkDirectionalParticles={2}
+                linkDirectionalParticleWidth={4}
+                linkCurvature={0}
+
+                d3VelocityDecay={0.1}
+                d3AlphaDecay={0.00001}
+                warmupTicks={Math.min(4 * nodeList.length, 500)}
+
+                width={width}
+                height={height}
+            />
+        </div>
     );
 }
