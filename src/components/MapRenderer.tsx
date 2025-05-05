@@ -2,7 +2,10 @@ import React from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import TileType from '../types/TileType';
 import useWindowSize from "../hooks/useWindowSize.ts";
+import useGameSettings from "../hooks/useGameSettings.ts";
 import useCurrentMap from "../hooks/useCurrentMap.ts";
+
+
 
 const TileTypeColors: Record<TileType, string> = {
     [TileType.Unknown]: 'gray',
@@ -27,6 +30,13 @@ const TileLabels: Record<TileType, string> = {
 export default function MapRenderer() {
     const currentMap = useCurrentMap();
     const [width, height] = useWindowSize();
+    const DEFAULT_ALPHA_DECAY = 0.00228;
+    const DEFAULT_VELOCITY_DECAY = 0.1;
+
+    const speed = Math.max(0.1, Math.min(8, useGameSettings()[0].simulationSpeed)); 
+
+    const d3AlphaDecay = DEFAULT_ALPHA_DECAY / speed;
+    const d3VelocityDecay = DEFAULT_VELOCITY_DECAY / speed;
 
     const nodeList = React.useMemo(() => {
         return currentMap.tileList.map((tile) => ({
@@ -64,9 +74,11 @@ export default function MapRenderer() {
                 linkDirectionalParticleWidth={4}
                 linkCurvature={0}
 
-                d3VelocityDecay={0.1}
-                d3AlphaDecay={0.00001}
-                warmupTicks={Math.min(4 * nodeList.length, 500)}
+
+
+                d3VelocityDecay={d3VelocityDecay}
+                d3AlphaDecay={d3AlphaDecay}
+                warmupTicks={Math.min(4 * nodeList.length / speed, 500)}
 
                 width={width}
                 height={height}

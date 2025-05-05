@@ -1,9 +1,20 @@
 import useGameSettings from "../../hooks/useGameSettings.ts";
-import {Form} from "react-bootstrap";
+import {Form, Row, Col} from "react-bootstrap";
 import GameSettingsInput from "./GameSettingsInput.tsx";
 
 export default function GameSettingsMenu() {
     const [gameSettings, setGameSettings] = useGameSettings();
+
+
+    const sliderValue = Math.round(gameSettings.simulationSpeed * 100);
+
+  const onSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pct = e.target.valueAsNumber;
+    setGameSettings({
+      ...gameSettings,
+      simulationSpeed: pct / 100,
+    });
+  };
 
     return (
         <Form className={""}>
@@ -31,6 +42,24 @@ export default function GameSettingsMenu() {
                     minStarDistance: value
                 })}
             />
+            <Form.Group as={Row} className="align-items-center mt-3">
+        <Form.Label column xs={4}>
+          Simulation Speed
+        </Form.Label>
+        <Col xs={6}>
+          <Form.Control
+            type="range"
+            min={10}
+            max={800}
+            step={1}
+            value={sliderValue}
+            onChange={onSliderChange}
+          />
+        </Col>
+        <Col xs={2}>
+          <Form.Text>{sliderValue}%</Form.Text>
+        </Col>
+      </Form.Group>
         </Form>
     )
 }
