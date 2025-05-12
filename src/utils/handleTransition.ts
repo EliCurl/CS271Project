@@ -8,7 +8,7 @@ export default function handleTransition(
     transition: TilePlacementTransition) {
 
     // Debugging Output
-    console.log("Handle Transition:", transition);
+    // console.log("Handle Transition:", transition);
 
     // Get the current pointer
     const {pointer} = state;

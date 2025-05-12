@@ -1,23 +1,16 @@
 import useGameSettings from "../../hooks/useGameSettings.ts";
-import {Form, Row, Col} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import GameSettingsInput from "./GameSettingsInput.tsx";
+import GameSettingsSlider from "./GameSettingsSlider.tsx";
 
 export default function GameSettingsMenu() {
     const [gameSettings, setGameSettings] = useGameSettings();
 
-
-    const sliderValue = Math.round(gameSettings.simulationSpeed * 100);
-
-  const onSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const pct = e.target.valueAsNumber;
-    setGameSettings({
-      ...gameSettings,
-      simulationSpeed: pct / 100,
-    });
-  };
-
     return (
         <Form className={""}>
+            <h5 className={"fw-bold mb-0 mt-2"}>
+                Generation
+            </h5>
             <GameSettingsInput
                 label={"Node Count"}
                 value={gameSettings.nodeCount}
@@ -42,24 +35,33 @@ export default function GameSettingsMenu() {
                     minStarDistance: value
                 })}
             />
-            <Form.Group as={Row} className="align-items-center mt-3">
-        <Form.Label column xs={4}>
-          Simulation Speed
-        </Form.Label>
-        <Col xs={6}>
-          <Form.Control
-            type="range"
-            min={10}
-            max={800}
-            step={1}
-            value={sliderValue}
-            onChange={onSliderChange}
-          />
-        </Col>
-        <Col xs={2}>
-          <Form.Text>{sliderValue}%</Form.Text>
-        </Col>
-      </Form.Group>
+            <h5 className={"fw-bold mb-0 mt-2"}>
+                Rendering
+            </h5>
+            <GameSettingsSlider
+                label={"Warmup Time"}
+                value={gameSettings.warmupTime}
+                valueText={`${gameSettings.warmupTime.toFixed(2)}x`}
+                min={0}
+                max={16}
+                step={0.5}
+                onChange={(value) => setGameSettings({
+                    ...gameSettings,
+                    warmupTime: value
+                })}
+            />
+            <GameSettingsSlider
+                label={"Force Scale"}
+                value={gameSettings.forceScale}
+                valueText={`${gameSettings.forceScale.toFixed(2)}x`}
+                min={0.25}
+                max={8}
+                step={0.25}
+                onChange={(value) => setGameSettings({
+                    ...gameSettings,
+                    forceScale: value
+                })}
+            />
         </Form>
     )
 }

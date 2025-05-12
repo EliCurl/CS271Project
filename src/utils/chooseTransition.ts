@@ -8,7 +8,7 @@ export default function chooseTransition(
     settings: GameSettings) {
 
     // Debugging Output
-    console.log("Choose Transition:", currentState.state);
+    // console.log("Choose Transition:", currentState.state);
 
     // const state = currentState.state;
     const {state} = currentState;

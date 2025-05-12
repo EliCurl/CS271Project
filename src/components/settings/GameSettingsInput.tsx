@@ -12,7 +12,8 @@ export default function GameSettingsInput(props: GameSettingsInputProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
-        const value = parseInt(e.target.value);
+        const value = parseFloat(e.target.value);
+        console.log(value);
         if (!isNaN(value))
             props.onChange(value);
     }

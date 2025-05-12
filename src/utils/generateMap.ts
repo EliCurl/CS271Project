@@ -30,7 +30,7 @@ export default function generateMap(settings: GameSettings) {
         tilePlacementActor.send({type: transition});
 
         // Debugging Output
-        console.log(currentState);
+        // console.log(currentState);
     }
 
     // Assign Star Tile
@@ -53,7 +53,7 @@ export default function generateMap(settings: GameSettings) {
 
 
     // Hope and pray
-    console.log("done", currentState);
+    //console.log("done", currentState);
 
     return currentState;
 }

@@ -6,7 +6,6 @@ import useGameSettings from "../hooks/useGameSettings.ts";
 import useCurrentMap from "../hooks/useCurrentMap.ts";
 
 
-
 const TileTypeColors: Record<TileType, string> = {
     [TileType.Unknown]: 'gray',
     [TileType.Start]: 'purple',
@@ -27,16 +26,17 @@ const TileLabels: Record<TileType, string> = {
     [TileType.EndStar]: 'End Star',
 };
 
+const DEFAULT_ALPHA_DECAY = 0.00228;
+const DEFAULT_VELOCITY_DECAY = 0.1;
+
 export default function MapRenderer() {
     const currentMap = useCurrentMap();
     const [width, height] = useWindowSize();
-    const DEFAULT_ALPHA_DECAY = 0.00228;
-    const DEFAULT_VELOCITY_DECAY = 0.1;
+    const [settings] = useGameSettings();
 
-    const speed = Math.max(0.1, Math.min(8, useGameSettings()[0].simulationSpeed)); 
-
-    const d3AlphaDecay = DEFAULT_ALPHA_DECAY / speed;
-    const d3VelocityDecay = DEFAULT_VELOCITY_DECAY / speed;
+    const d3AlphaDecay = DEFAULT_ALPHA_DECAY / settings.simulationSpeed;
+    const d3VelocityDecay = DEFAULT_VELOCITY_DECAY / settings.simulationSpeed;
+    const warmupTicks = settings.warmupTime * currentMap.tileList.length;
 
     const nodeList = React.useMemo(() => {
         return currentMap.tileList.map((tile) => ({
@@ -75,10 +75,9 @@ export default function MapRenderer() {
                 linkCurvature={0}
 
 
-
                 d3VelocityDecay={d3VelocityDecay}
                 d3AlphaDecay={d3AlphaDecay}
-                warmupTicks={Math.min(4 * nodeList.length / speed, 500)}
+                warmupTicks={Math.min(warmupTicks, 500)}
 
                 width={width}
                 height={height}
