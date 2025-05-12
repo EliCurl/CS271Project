@@ -34,8 +34,8 @@ export default function MapRenderer() {
     const [width, height] = useWindowSize();
     const [settings] = useGameSettings();
 
-    const d3AlphaDecay = DEFAULT_ALPHA_DECAY / settings.simulationSpeed;
-    const d3VelocityDecay = DEFAULT_VELOCITY_DECAY / settings.simulationSpeed;
+    const d3AlphaDecay = DEFAULT_ALPHA_DECAY / settings.forceScale;
+    const d3VelocityDecay = DEFAULT_VELOCITY_DECAY / settings.forceScale;
     const warmupTicks = settings.warmupTime * currentMap.tileList.length;
 
     const nodeList = React.useMemo(() => {
