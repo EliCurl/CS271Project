@@ -89,6 +89,6 @@ export default function handleTransition(
         state.pointer.type = TileColorTransitionMap[transition];
 
     } else {
-        throw new Error("Unknown transition type.");
+        throw new Error(`Invalid transition: ${transition}`);
     }
 }
