@@ -12,7 +12,7 @@ export default function chooseTileColorTransition(
 
     // throw new Error('Invalid state: ' + currentState);
     if (state === 'blue') {
-        randomChoice = Math.random();
+        randomChoice = currentState.getRandom();
         if (randomChoice <= 0.70) {
             return 'changeBlue';
         } else if (randomChoice <= 0.90) {
@@ -21,7 +21,7 @@ export default function chooseTileColorTransition(
             return 'changeEvent';
         }
     } else if (state === 'red') {
-        randomChoice = Math.random();
+        randomChoice = currentState.getRandom();
         if (randomChoice <= 0.20) {
             return 'changeRed';
         } else if (randomChoice <= 0.90) {
@@ -30,7 +30,7 @@ export default function chooseTileColorTransition(
             return 'changeEvent';
         }
     } else if (state === 'event') {
-        randomChoice = Math.random();
+        randomChoice = currentState.getRandom();
         if (randomChoice <= 0.10) {
             return 'changeEvent';
         } else if (randomChoice <= 0.80) {

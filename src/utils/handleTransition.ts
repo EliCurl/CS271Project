@@ -68,7 +68,7 @@ export default function handleTransition(
     } else if (transition === TilePlacementTransition.loopback) {
 
         // Pick a random tile to loop back to
-        const randomTile = state.tileList[Math.floor(Math.random() * state.tileList.length)];
+        const randomTile = state.tileList[Math.floor(state.getRandom() * state.tileList.length)];
 
         // Add loopback arrow to the current tile
         pointer.arrows.push(randomTile);

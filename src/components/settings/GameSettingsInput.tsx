@@ -3,12 +3,13 @@ import React from "react";
 
 export interface GameSettingsInputProps {
     label: string;
-    value: number;
+    value: number | undefined;
     onChange: (value: number) => void;
+    disabled?: boolean;
 }
 
 export default function GameSettingsInput(props: GameSettingsInputProps) {
-    const [text, setText] = React.useState<string>(props.value.toString());
+    const [text, setText] = React.useState<string>(props.value?.toString() ?? "");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setText(e.target.value);
@@ -19,12 +20,16 @@ export default function GameSettingsInput(props: GameSettingsInputProps) {
     }
 
     React.useEffect(() => {
-        setText(props.value.toString());
+        setText(props.value?.toString() ?? "");
     }, [props.value]);
 
     return (
-        <Form.Group as={Row}>
-            <Form.Label column={true}>
+        <Form.Group
+            as={Row}
+        >
+            <Form.Label
+                column={true}
+            >
                 {props.label}
             </Form.Label>
             <Col
@@ -36,6 +41,7 @@ export default function GameSettingsInput(props: GameSettingsInputProps) {
                     size={"sm"}
                     value={text}
                     onChange={handleChange}
+                    disabled={props.disabled}
                 />
             </Col>
         </Form.Group>

@@ -1,7 +1,8 @@
 import useGameSettings from "../../hooks/useGameSettings.ts";
-import {Form} from "react-bootstrap";
+import {Collapse, Form} from "react-bootstrap";
 import GameSettingsInput from "./GameSettingsInput.tsx";
 import GameSettingsSlider from "./GameSettingsSlider.tsx";
+import GameSettingsCheckbox from "./GameSettingsCheckbox.tsx";
 
 export default function GameSettingsMenu() {
     const [gameSettings, setGameSettings] = useGameSettings();
@@ -11,6 +12,29 @@ export default function GameSettingsMenu() {
             <h5 className={"fw-bold mb-0 mt-2"}>
                 Generation
             </h5>
+            <GameSettingsCheckbox
+                label={"Random Seed"}
+                value={gameSettings.useRandomSeed}
+                onChange={(value) => setGameSettings({
+                    ...gameSettings,
+                    useRandomSeed: value
+                })}
+            />
+            <Collapse
+                in={!gameSettings.useRandomSeed}
+            >
+                <div>
+                    <GameSettingsInput
+                        label={"Seed"}
+                        disabled={gameSettings.useRandomSeed}
+                        value={gameSettings.seed}
+                        onChange={(value) => setGameSettings({
+                            ...gameSettings,
+                            seed: value
+                        })}
+                    />
+                </div>
+            </Collapse>
             <GameSettingsInput
                 label={"Node Count"}
                 value={gameSettings.nodeCount}

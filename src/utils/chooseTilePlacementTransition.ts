@@ -19,7 +19,7 @@ export default function chooseTilePlacementTransition(
     if (state === 'path') {
         // chanceBranch = 0.10;
         // continuePath = 0.90;
-        randomChoice = Math.random();
+        randomChoice = currentState.getRandom();
         if (randomChoice <= 0.40 && isFarEnoughToBranch) {
             return 'branch';
         } else {
@@ -30,7 +30,7 @@ export default function chooseTilePlacementTransition(
         // continueBranch = 0.75;
         // chancePipe = 0.05;
         // chanceLoopback = .15;
-        randomChoice = Math.random();
+        randomChoice = currentState.getRandom();
         if (randomChoice <= 0.05 && isFarEnoughToBranch) {
             return 'branchBranch';
         } else if (randomChoice <= 0.10) {

@@ -17,7 +17,7 @@ export default function generateMap(settings: GameSettings) {
     tilePlacementActor.start();
 
     // Create new placement state
-    const currentState = new TilePlacementState();
+    const currentState = new TilePlacementState(settings.useRandomSeed ? Math.random() : settings.seed);
 
     // Generate Tile Map
     while (currentState.tileList.length < settings.nodeCount) {
@@ -59,12 +59,12 @@ export default function generateMap(settings: GameSettings) {
     }
 
     // Assign Star Tile
-    if (Math.random() < 0.5) {
+    if (currentState.getRandom() < 0.5) {
         // Loop the map back to the start tile
         currentState.pointer.arrows.push(currentState.startTile);
 
         // Choose a random tile for star with a minimum distance from the start tile
-        let randomTileIndex = Math.floor(Math.random() * currentState.tileList.length);
+        let randomTileIndex = Math.floor(currentState.getRandom() * currentState.tileList.length);
         if (randomTileIndex < settings.minStarDistance)
             randomTileIndex += settings.minStarDistance;
 
