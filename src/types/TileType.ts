@@ -4,6 +4,7 @@ enum TileType {
     Start = 'start',
     Blue = 'blue',
     Red = 'red',
+    Event = 'event',
 
     Pipe = 'pipe',
     Star = 'star',
