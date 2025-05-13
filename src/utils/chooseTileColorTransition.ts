@@ -22,9 +22,9 @@ export default function chooseTileColorTransition(
         }
     } else if (state === 'red') {
         randomChoice = Math.random();
-        if (randomChoice <= 0.10) {
+        if (randomChoice <= 0.20) {
             return 'changeRed';
-        } else if (randomChoice <= 0.80) {
+        } else if (randomChoice <= 0.90) {
             return 'changeBlue';
         } else {
             return 'changeEvent';
