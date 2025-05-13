@@ -5,7 +5,7 @@ let randomChoice = 0.0;
 
 export default function chooseTileColorTransition(
     currentState: TilePlacementState,
-    settings: GameSettings) {
+    _: GameSettings) {
 
     const {state} = currentState;
 
