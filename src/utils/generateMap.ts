@@ -8,6 +8,7 @@ import TilePlacementTransition from "../types/TilePlacementTransition.ts";
 import GameSettings from "../types/GameSettings.ts";
 import chooseTileColorTransition from "./chooseTileColorTransition.ts";
 import TileType from "../types/TileType.ts";
+import TileColorTransition from "../types/TileColorTransition.ts";
 
 export default function generateMap(settings: GameSettings) {
 
@@ -48,13 +49,31 @@ export default function generateMap(settings: GameSettings) {
         currentState.pointer = currentState.tileList[i];
 
         // Update Finite State Machine with the current state
-        const transition = chooseTileColorTransition(currentState, settings);
+        const transition = chooseTileColorTransition(currentState, settings) as TileColorTransition;
 
         // Handle the transition
         handleTransition(currentState, transition);
 
         // Update the FSM with the chosen transition
         tileColorActor.send({type: transition});
+    }
+
+    // Assign Star Tile
+    if (Math.random() < 0.5) {
+        // Loop the map back to the start tile
+        currentState.pointer.arrows.push(currentState.startTile);
+
+        // Choose a random tile for star with a minimum distance from the start tile
+        let randomTileIndex = Math.floor(Math.random() * currentState.tileList.length);
+        if (randomTileIndex < settings.minStarDistance)
+            randomTileIndex += settings.minStarDistance;
+
+        const randomTile = currentState.tileList[randomTileIndex];
+        randomTile.type = TileType.Star;
+    } else {
+        // Make the last tile the star tile
+        const lastTile = currentState.tileList[currentState.tileList.length - 1];
+        lastTile.type = TileType.EndStar;
     }
 
     return currentState;
