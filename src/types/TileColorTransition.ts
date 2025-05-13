@@ -1,8 +1,8 @@
 enum TilePlacementTransition {
-    blue = 'blue',
-    red = 'red',
-    event = 'event',
-    star = 'star',
+    blue = 'changeBlue',
+    red = 'changeRed',
+    event = 'changeEvent',
+    star = 'changeStar',
 }
 
 export default TilePlacementTransition;
