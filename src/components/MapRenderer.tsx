@@ -9,7 +9,7 @@ import useCurrentMap from "../hooks/useCurrentMap.ts";
 const TileTypeColors: Record<TileType, string> = {
     [TileType.Unknown]: 'gray',
     [TileType.Start]: 'purple',
-    [TileType.Event]: 'lime',
+    [TileType.Event]: 'pink',
     [TileType.Blue]: 'blue',
     [TileType.Red]: 'red',
     [TileType.Pipe]: 'green',
@@ -70,7 +70,7 @@ export default function MapRenderer() {
                 backgroundColor={"#eee"}
                 nodeColor={(node) => TileTypeColors[node.name as TileType]}
                 nodeLabel={(node) => TileLabels[node.name as TileType]}
-                nodeRelSize={18}
+                nodeRelSize={settings.nodeSize}
                 linkDirectionalArrowLength={14}
                 linkDirectionalParticles={2}
                 linkDirectionalParticleWidth={4}
