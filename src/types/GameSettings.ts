@@ -11,7 +11,7 @@ export default interface GameSettings {
 
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
     seed: 0,
-    useRandomSeed: false,
+    useRandomSeed: true,
     minIntersectionDistance: 5,
     nodeCount: 20,
     minStarDistance: 10,
