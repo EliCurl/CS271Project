@@ -10,6 +10,7 @@ import useCurrentMap from "../hooks/useCurrentMap.ts";
 const TileTypeColors: Record<TileType, string> = {
     [TileType.Unknown]: 'gray',
     [TileType.Start]: 'purple',
+    [TileType.Event]: 'pink',
     [TileType.Blue]: 'blue',
     [TileType.Red]: 'red',
     [TileType.Pipe]: 'green',
@@ -20,6 +21,7 @@ const TileTypeColors: Record<TileType, string> = {
 const TileLabels: Record<TileType, string> = {
     [TileType.Unknown]: '???',
     [TileType.Start]: 'Start',
+    [TileType.Event]: 'Event',
     [TileType.Blue]: 'Blue',
     [TileType.Red]: 'Red',
     [TileType.Pipe]: 'Pipe',
