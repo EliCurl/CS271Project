@@ -3,7 +3,7 @@ import GameSettings from "../types/GameSettings.ts";
 
 let randomChoice = 0.0;
 
-export default function chooseTransition(
+export default function chooseTilePlacementTransition(
     currentState: TilePlacementState,
     settings: GameSettings) {
 

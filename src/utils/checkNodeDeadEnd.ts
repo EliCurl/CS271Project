@@ -11,7 +11,7 @@ export default function checkNodeDeadEnd(node: GameTile): boolean {
     if (node.arrows.length === 0)
         return true;
 
-    let checkedTiles = new Set<GameTile>();
+    const checkedTiles = new Set<GameTile>();
     return checkNodeDeadEndRecursive(node, checkedTiles);
 }
 

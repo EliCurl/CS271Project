@@ -1,4 +1,4 @@
-import { createMachine } from 'xstate';
+import {createMachine} from 'xstate';
 
 const tileColorFSM = createMachine({
     id: 'tileColorFSM',
@@ -7,7 +7,7 @@ const tileColorFSM = createMachine({
     states: {
         'blue': {
             on: {
-                'continueBlue': 'blue',
+                'changeBlue': 'blue',
                 'changeRed': 'red',
                 'changeEvent': 'event',
                 'changeStar': 'star',
@@ -21,7 +21,7 @@ const tileColorFSM = createMachine({
         },
         'event': {
             on: {
-                'continueEvent': 'event',
+                'changeEvent': 'event',
                 'changeBlue': 'blue',
                 'changeRed': 'red',
                 'changeStar': 'star',

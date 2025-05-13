@@ -2,6 +2,14 @@ import TilePlacementTransition from "../types/TilePlacementTransition.ts";
 import GameTile from "../types/GameTile.ts";
 import TilePlacementState from "../types/TilePlacementState.ts";
 import TileType from "../types/TileType.ts";
+import TileColorTransition from "../types/TileColorTransition.ts";
+
+const TileColorTransitionMap = {
+    [TileColorTransition.blue]: TileType.Blue,
+    [TileColorTransition.red]: TileType.Red,
+    [TileColorTransition.event]: TileType.Event,
+    [TileColorTransition.star]: TileType.Star,
+}
 
 export default function handleTransition(
     state: TilePlacementState,
@@ -70,7 +78,16 @@ export default function handleTransition(
 
         // Reset distance from intersection
         state.distanceFromIntersection = 0;
+    } else if (
+        transition === TileColorTransition.blue ||
+        transition === TileColorTransition.red ||
+        transition === TileColorTransition.event ||
+        transition === TileColorTransition.star
+    ) {
 
+        // Set the color of the tiles
+        state.pointer.type = TileColorTransitionMap[transition];
+        
     } else {
         throw new Error("Unknown transition type.");
     }
