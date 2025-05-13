@@ -62,6 +62,19 @@ export default function GameSettingsMenu() {
                     forceScale: value
                 })}
             />
+            <GameSettingsSlider
+                label={"Node Size"}
+                value={gameSettings.nodeSize}
+                valueText={`${gameSettings.nodeSize.toFixed()}px`}
+                min={1}
+                max={100}
+                step={1}
+                onChange={(value) => setGameSettings({
+                    ...gameSettings,
+                    nodeSize: value
+                })}
+            />
         </Form>
+
     )
 }

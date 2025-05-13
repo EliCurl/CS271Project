@@ -4,6 +4,7 @@ export default interface GameSettings {
     minStarDistance: number;
     forceScale: number;
     warmupTime: number;
+    nodeSize: number;
 }
 
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
@@ -11,5 +12,6 @@ export const DEFAULT_GAME_SETTINGS: GameSettings = {
     nodeCount: 20,
     minStarDistance: 10,
     forceScale: 1,
-    warmupTime: 4
+    warmupTime: 4,
+    nodeSize: 18,
 };
