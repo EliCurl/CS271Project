@@ -9,6 +9,7 @@ import GameSettings from "../types/GameSettings.ts";
 import chooseTileColorTransition from "./chooseTileColorTransition.ts";
 import TileType from "../types/TileType.ts";
 import TileColorTransition from "../types/TileColorTransition.ts";
+import canReachStart from "./canReachStart.ts";
 
 export default function generateMap(settings: GameSettings) {
 
@@ -33,6 +34,34 @@ export default function generateMap(settings: GameSettings) {
         // Update the FSM with the chosen transition
         tilePlacementActor.send({type: transition});
     }
+    
+    // Assign Star Tile
+    if (currentState.getRandom() < 0.5) {
+        // Loop the map back to the start tile
+        currentState.pointer.arrows.push(currentState.startTile);
+
+        // Choose a random tile for star with a minimum distance from the start tile
+        let randomTileIndex = Math.floor(currentState.getRandom() * currentState.tileList.length);
+        if (randomTileIndex < settings.minStarDistance)
+            randomTileIndex += settings.minStarDistance;
+
+        const randomTile = currentState.tileList[randomTileIndex];
+        randomTile.type = TileType.Star;
+    } else {
+        // Make the last tile the star tile
+        const lastTile = currentState.tileList[currentState.tileList.length - 1];
+        lastTile.type = TileType.EndStar;
+    }
+
+    // Cut tiles that cannot reach the start tile
+    currentState.tileList = currentState.tileList.filter(tile => canReachStart(tile));
+
+    // Remove arrows to removed tiles
+    for (const tile of currentState.tileList)
+        tile.arrows = tile.arrows.filter(arrow => currentState.tileList.includes(arrow));
+
+    if (currentState.tileList.length <= 0)
+        throw new Error("No tiles left after filtering");
 
     // Generate Tile Color State Machine
     const tileColorActor = createActor(tileColorFSM);
@@ -56,24 +85,6 @@ export default function generateMap(settings: GameSettings) {
 
         // Update the FSM with the chosen transition
         tileColorActor.send({type: transition});
-    }
-
-    // Assign Star Tile
-    if (currentState.getRandom() < 0.5) {
-        // Loop the map back to the start tile
-        currentState.pointer.arrows.push(currentState.startTile);
-
-        // Choose a random tile for star with a minimum distance from the start tile
-        let randomTileIndex = Math.floor(currentState.getRandom() * currentState.tileList.length);
-        if (randomTileIndex < settings.minStarDistance)
-            randomTileIndex += settings.minStarDistance;
-
-        const randomTile = currentState.tileList[randomTileIndex];
-        randomTile.type = TileType.Star;
-    } else {
-        // Make the last tile the star tile
-        const lastTile = currentState.tileList[currentState.tileList.length - 1];
-        lastTile.type = TileType.EndStar;
     }
 
     return currentState;
