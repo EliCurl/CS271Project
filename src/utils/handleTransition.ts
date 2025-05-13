@@ -13,7 +13,7 @@ const TileColorTransitionMap = {
 
 export default function handleTransition(
     state: TilePlacementState,
-    transition: TilePlacementTransition) {
+    transition: TilePlacementTransition | TileColorTransition) {
 
     // Debugging Output
     // console.log("Handle Transition:", transition);
@@ -87,7 +87,7 @@ export default function handleTransition(
 
         // Set the color of the tiles
         state.pointer.type = TileColorTransitionMap[transition];
-        
+
     } else {
         throw new Error("Unknown transition type.");
     }
